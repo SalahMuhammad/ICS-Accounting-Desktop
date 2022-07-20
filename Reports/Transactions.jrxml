@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transactions" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e56acaa7-e8bc-4e45-9255-a728c1d64638">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 != 0]]></conditionExpression>
+			<style backcolor="#CCCCFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="param2" class="java.lang.String"/>
+	<parameter name="param" class="java.lang.Integer"/>
+	<parameter name="param3" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+     TRANSACTIONS."DATEE" AS TRANSACTIONS_DATEE,
+     TRANSACTIONS."CREDIT" AS TRANSACTIONS_CREDIT,
+     TRANSACTIONS."DEBT" AS TRANSACTIONS_DEBT,
+     TRANSACTIONS."DESCRIPTION" AS TRANSACTIONS_DESCRIPTION
+FROM
+     "ICSACCOUNTING"."TRANSACTIONS" TRANSACTIONS
+WHERE TRANSACTIONS."ID" = $P{param}
+and TRANSACTIONS."DATEE" >= $P{param3}
+ORDER BY
+     TRANSACTIONS."DATEE" desc]]>
+	</queryString>
+	<field name="TRANSACTIONS_DATEE" class="java.sql.Timestamp"/>
+	<field name="TRANSACTIONS_CREDIT" class="java.math.BigDecimal"/>
+	<field name="TRANSACTIONS_DEBT" class="java.math.BigDecimal"/>
+	<field name="TRANSACTIONS_DESCRIPTION" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{TRANSACTIONS_CREDIT}]]></variableExpression>
+	</variable>
+	<variable name="variable2" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{TRANSACTIONS_DEBT}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="132" splitType="Stretch">
+			<frame>
+				<reportElement uuid="c3411759-4f5f-4316-b4b3-98c564d39b4b" mode="Opaque" x="0" y="0" width="555" height="95" backcolor="#000000"/>
+				<staticText>
+					<reportElement uuid="704df7a1-12f2-42c8-a92c-3182c4e47956" style="Title" x="0" y="0" width="555" height="66"/>
+					<textElement>
+						<font size="46" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Transactions Report For]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="f42fe422-2d75-4c74-aeeb-319dc2a34b4e" mode="Opaque" x="0" y="66" width="555" height="29" forecolor="#000066" backcolor="#666666"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="22" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{param2}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement uuid="6ef3d246-708b-43eb-b5e6-8d0c799666c6" mode="Opaque" x="0" y="100" width="555" height="32" forecolor="#000000" backcolor="#CC0000"/>
+				<textField pattern="EEE, d MMM yyyy HH:mm:ss Z">
+					<reportElement uuid="8a5eec47-a7b7-4b62-92dc-c17551c75cfe" x="361" y="12" width="194" height="20" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a028f969-e4d0-4a0c-909b-cfe2aa21154e" style="Column header" x="91" y="7" width="328" height="18" forecolor="#660000"/>
+				<box leftPadding="8" rightPadding="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPTION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="439bda6b-e22a-4a4d-8d11-fe2d9f163fe5" style="Column header" x="419" y="7" width="68" height="18" forecolor="#660000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CREDIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="126eb4f8-dac1-4e1e-9646-f40d664b4f5d" style="Column header" x="487" y="7" width="68" height="18" forecolor="#660000"/>
+				<box leftPadding="6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEBT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="40f20c2f-47b3-4caa-94a1-c232b29c32a5" x="0" y="7" width="91" height="18" forecolor="#660000"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<frame>
+				<reportElement uuid="8f9f71ca-5cd3-4e93-9901-48040616f32d" style="Row" mode="Opaque" x="0" y="0" width="555" height="26"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="c7af8065-b794-4ad4-9856-56091a15b3ab" style="Detail" positionType="Float" x="91" y="0" width="328" height="26"/>
+					<box leftPadding="8" rightPadding="15"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TRANSACTIONS_DESCRIPTION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="6434f435-c4a1-462a-82b6-1f1ff40fe19c" style="Detail" positionType="Float" x="419" y="0" width="68" height="26"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TRANSACTIONS_CREDIT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="98e8a87b-1948-4a53-9c27-c607e0dbdd0a" style="Detail" positionType="Float" x="487" y="0" width="68" height="26"/>
+					<box leftPadding="6"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TRANSACTIONS_DEBT}]]></textFieldExpression>
+				</textField>
+				<textField pattern="yyyy/MM/dd">
+					<reportElement uuid="07376784-e4e9-466a-a3f1-b55b422fcee8" x="2" y="0" width="89" height="26"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TRANSACTIONS_DATEE}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="8" splitType="Stretch">
+			<line>
+				<reportElement uuid="9c172a6d-b6de-4e63-8275-bc63756cd169" positionType="FixRelativeToBottom" x="0" y="0" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement uuid="1037b1ad-5456-42ad-a3d9-fa7db78f2eab" mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000"/>
+				<textField evaluationTime="Report">
+					<reportElement uuid="498bef64-9ea7-4c34-8947-9278fec9dea3" style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="85ebb3af-0b24-4a07-af7a-3159c0bd6fa8" style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement uuid="b1e57c1a-1011-4f7c-8d37-1db9380eef4c" style="Column header" x="2" y="1" width="197" height="20" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="4e522548-27ab-44fc-943a-4899b126a758" x="393" y="10" width="78" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Credit Total: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="371802eb-04a8-4033-9f80-94accddcf736" x="471" y="10" width="84" height="20" forecolor="#0000CC"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1} - $V{variable2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
